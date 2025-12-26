@@ -1,3 +1,11 @@
 .idea
 .env
 realm.json
+
+tmp/
+
+**.tfbackend
+**.tfvars
+**.tfstate
+**.tfstate.backup
+**.terraform/
