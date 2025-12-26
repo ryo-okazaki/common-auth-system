@@ -54,6 +54,17 @@ services:
       - auth_postgres_data:/var/lib/postgresql/data
       - ./docker/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf
 
+  auth-mailhog:
+    container_name: auth-mailhog
+    image: mailhog/mailhog
+    ports:
+      - "${MAIL_UI_PORT:-8025}:8025"
+      - "${MAIL_SMTP_PORT:-1025}:1025"
+    env_file:
+      - .env
+    volumes:
+      - auth_mailhog_data:/home/mailhog
+
 #  auth-kc-tools:
 #    build:
 #      context: .
@@ -70,3 +81,4 @@ services:
 
 volumes:
   auth_postgres_data:
+  auth_mailhog_data:
