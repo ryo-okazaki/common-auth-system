@@ -55,4 +55,10 @@ echo "Assigning roles to service account..."
   --rolename manage-identity-providers \
   --rolename manage-events
 
+echo "Assigning realm role to service account..."
+/opt/keycloak/bin/kcadm.sh add-roles \
+  -r master \
+  --uusername "service-account-$TERRAFORM_CLIENT_ID" \
+  --rolename admin
+
 echo "=== Setup Complete ==="
