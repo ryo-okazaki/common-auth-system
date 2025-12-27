@@ -222,7 +222,8 @@ resource "aws_ecs_task_definition" "this" {
 
       # 本番モードで起動
       # command = ["start", "--optimized"]
-      command = ["start"]
+      # command = ["start"]
+      command = ["start", "--import-realm"]
 
       portMappings = [
         { containerPort = 8080, hostPort = 8080 },
