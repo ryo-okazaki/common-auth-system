@@ -21,6 +21,17 @@ module "dns" {
   }
 }
 
+module "mail" {
+  source = "../../../modules/mail"
+
+  env          = var.environment
+  service_name = var.mail_service_name
+  domain_name  = var.domain_name
+  zone_id      = module.dns.zone_id
+  aws_region   = var.region
+  from_email   = var.from_email
+}
+
 # 4. Keycloak App: ALB, ECS, ECR, IAM, Route53 A-Record
 module "keycloak_app" {
   source          = "../../../modules/keycloak-app"
@@ -42,6 +53,11 @@ module "keycloak_app" {
 
   rds_sg_id                   = module.database.rds_sg_id
   terraform_client_secret_arn = module.keycloak_app.terraform_client_secret_arn
+  ses_smtp_credentials_secret_arn = module.mail.smtp_credentials_secret_arn
+  ses_smtp_endpoint               = module.mail.smtp_endpoint
+  ses_smtp_port                   = module.mail.smtp_port
+  ses_from_email                  = module.mail.from_email
+  ses_from_display_name           = "Keycloak Dev"
 }
 
 # 5. Database: RDS Instance & Security Group

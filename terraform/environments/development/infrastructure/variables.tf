@@ -73,6 +73,20 @@ variable "parent_domain_name" {
 }
 
 # =============================================================================
+# Mail
+# =============================================================================
+variable "mail_service_name" {
+  description = "Service name for mail (e.g., keycloak)"
+  type        = string
+}
+
+variable "from_email" {
+  description = "Default from email address"
+  type        = string
+  default     = "noreply"
+}
+
+# =============================================================================
 # Database
 # =============================================================================
 variable "db_instance_class" {
