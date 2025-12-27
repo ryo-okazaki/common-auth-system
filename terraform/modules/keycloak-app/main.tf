@@ -245,11 +245,17 @@ resource "aws_ecs_task_definition" "this" {
         { name = "KC_HEALTH_ENABLED", value = "true" },
         { name = "KC_METRICS_ENABLED", value = "true" },
 
-        { name = "KEYCLOAK_ADMIN", value = "admin" }
+        { name = "KEYCLOAK_ADMIN", value = "admin" },
+
+        # インポートの上書き戦略
+        { name = "KC_SPI_IMPORT_IMPORTER_DIR", value = "/opt/keycloak/data/import" },
+        { name = "KC_SPI_IMPORT_IMPORTER_STRATEGY", value = "IGNORE_EXISTING" }
       ]
       secrets = [
         { name = "KC_DB_PASSWORD", valueFrom = var.db_password_arn },
-        { name = "KEYCLOAK_ADMIN_PASSWORD", valueFrom = var.admin_password_arn }
+        { name = "KEYCLOAK_ADMIN_PASSWORD", valueFrom = var.admin_password_arn },
+        # Terraform client secret
+        { name = "TERRAFORM_CLIENT_SECRET", valueFrom = var.terraform_client_secret_arn }
       ]
       logConfiguration = {
         logDriver = "awslogs"
