@@ -17,7 +17,7 @@ resource "null_resource" "push_keycloak_image" {
   }
 
   provisioner "local-exec" {
-    command     = "bash ${path.module}/push-ecr-image.sh"
+    command     = "bash ${path.module}/docker/push-ecr-image.sh"
     environment = {
       ECR_REPOSITORY_URL = aws_ecr_repository.this.repository_url
       KEYCLOAK_VERSION   = "26.0"
