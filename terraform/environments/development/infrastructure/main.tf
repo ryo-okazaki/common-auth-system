@@ -41,6 +41,7 @@ module "keycloak_app" {
   bastion_sg_id      = module.bastion.security_group_id
 
   rds_sg_id = module.database.rds_sg_id
+  terraform_client_secret_arn = module.keycloak_app.terraform_client_secret_arn
 }
 
 # 5. Database: RDS Instance & Security Group
