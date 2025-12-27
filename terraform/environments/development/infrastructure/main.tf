@@ -40,7 +40,7 @@ module "keycloak_app" {
   admin_password_arn = module.database.admin_password_secret_arn
   bastion_sg_id      = module.bastion.security_group_id
 
-  rds_sg_id = module.database.rds_sg_id
+  rds_sg_id                   = module.database.rds_sg_id
   terraform_client_secret_arn = module.keycloak_app.terraform_client_secret_arn
 }
 
