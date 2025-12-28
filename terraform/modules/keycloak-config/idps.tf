@@ -27,9 +27,9 @@ resource "keycloak_oidc_google_identity_provider" "google" {
     # "offlineAccess"                       = "false"
     # "acceptsPromptNoneForwardFromClient"  = "false"
     # "disableUserInfo"                     = "false"
-    "filteredByClaim"                     = "false"
-    "caseSensitiveOriginalUsername"       = "false"
-    "prompt"                              = "consent select_account"
+    "filteredByClaim"               = "false"
+    "caseSensitiveOriginalUsername" = "false"
+    "prompt"                        = "consent select_account"
     # "defaultScope"                        = "openid profile email"
   }
 }

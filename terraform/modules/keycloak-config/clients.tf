@@ -11,7 +11,7 @@ resource "keycloak_openid_client" "todo_backend" {
   name      = var.todo_backend_client_name
   enabled   = true
 
-  access_type = "CONFIDENTIAL"
+  access_type   = "CONFIDENTIAL"
   client_secret = var.todo_backend_client_secret
 
   # Flow settings - service account only

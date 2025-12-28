@@ -17,7 +17,7 @@ resource "null_resource" "push_keycloak_image" {
   }
 
   provisioner "local-exec" {
-    command     = "bash ${path.module}/docker/push-ecr-image.sh"
+    command = "bash ${path.module}/docker/push-ecr-image.sh"
     environment = {
       ECR_REPOSITORY_URL = aws_ecr_repository.this.repository_url
       KEYCLOAK_VERSION   = "26.0"
@@ -33,8 +33,8 @@ resource "aws_iam_role" "execution" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "ecs-tasks.amazonaws.com" }
     }]
   })
@@ -56,8 +56,8 @@ resource "aws_iam_policy" "secrets_access" {
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Effect   = "Allow"
-      Action   = "secretsmanager:GetSecretValue"
+      Effect = "Allow"
+      Action = "secretsmanager:GetSecretValue"
       Resource = [
         var.db_password_arn,
         var.admin_password_arn,
@@ -79,8 +79,8 @@ resource "aws_iam_role" "task" {
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
-      Action = "sts:AssumeRole"
-      Effect = "Allow"
+      Action    = "sts:AssumeRole"
+      Effect    = "Allow"
       Principal = { Service = "ecs-tasks.amazonaws.com" }
     }]
   })
@@ -174,7 +174,7 @@ resource "aws_lb_target_group" "this" {
 
   health_check {
     path                = "/health/live"
-    port = "9000"
+    port                = "9000"
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 5
@@ -217,8 +217,8 @@ resource "aws_ecs_task_definition" "this" {
 
   container_definitions = jsonencode([
     {
-      name  = "keycloak"
-      image = "${aws_ecr_repository.this.repository_url}:26.0"
+      name      = "keycloak"
+      image     = "${aws_ecr_repository.this.repository_url}:26.0"
       essential = true
 
       # 本番モードで起動

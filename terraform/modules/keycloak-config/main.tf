@@ -27,13 +27,13 @@ resource "keycloak_realm" "realm" {
   enabled = var.realm_enabled
 
   # Login settings
-  registration_allowed    = var.registration_allowed
-  remember_me             = var.remember_me
-  verify_email            = var.verify_email
+  registration_allowed     = var.registration_allowed
+  remember_me              = var.remember_me
+  verify_email             = var.verify_email
   login_with_email_allowed = var.login_with_email_allowed
   duplicate_emails_allowed = var.duplicate_emails_allowed
-  reset_password_allowed  = var.reset_password_allowed
-  edit_username_allowed   = var.edit_username_allowed
+  reset_password_allowed   = var.reset_password_allowed
+  edit_username_allowed    = var.edit_username_allowed
 
   # SSL settings
   ssl_required = var.ssl_required
@@ -46,12 +46,12 @@ resource "keycloak_realm" "realm" {
 
   # SMTP server configuration
   smtp_server {
-    host = var.smtp_host
-    port = var.smtp_port
-    from = var.smtp_from
+    host              = var.smtp_host
+    port              = var.smtp_port
+    from              = var.smtp_from
     from_display_name = var.smtp_from_display_name
-    starttls = var.smtp_starttls
-    ssl      = var.smtp_ssl
+    starttls          = var.smtp_starttls
+    ssl               = var.smtp_ssl
 
     dynamic "auth" {
       for_each = var.smtp_auth_enabled ? [1] : []

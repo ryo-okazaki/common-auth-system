@@ -45,7 +45,7 @@ resource "aws_db_instance" "this" {
 
 # Secrets Managerでのパスワード管理
 resource "aws_secretsmanager_secret" "db_password" {
-  name = "/${var.env}/keycloak/db_password"
+  name                    = "/${var.env}/keycloak/db_password"
   recovery_window_in_days = 0
 }
 
@@ -55,7 +55,7 @@ resource "aws_secretsmanager_secret_version" "db_password" {
 }
 
 resource "aws_secretsmanager_secret" "admin_password" {
-  name = "/${var.env}/keycloak/db_admin_password"
+  name                    = "/${var.env}/keycloak/db_admin_password"
   recovery_window_in_days = 0
 }
 

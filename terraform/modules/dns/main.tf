@@ -33,9 +33,9 @@ resource "aws_route53_record" "ns" {
 
 # ACM 証明書
 resource "aws_acm_certificate" "this" {
-  domain_name       = var.domain_name
+  domain_name = var.domain_name
   subject_alternative_names = [
-    "*.${var.domain_name}"  # *.dev.auth.ryo-okazaki.com
+    "*.${var.domain_name}" # *.dev.auth.ryo-okazaki.com
   ]
 
   validation_method = "DNS"
