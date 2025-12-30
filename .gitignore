@@ -3,6 +3,7 @@
 realm.json
 
 tmp/
+**tmp**
 
 **.tfbackend
 **.tfvars
