@@ -1,0 +1,44 @@
+
+sequenceDiagram
+    participant U as ユーザー
+    participant F as フロント(Next.js)
+    participant B as バック(Express)
+    participant K as Keycloak
+    participant DB as データベース
+
+    U->>F: 1. 「マイクロサービスIDでログイン」クリック
+    F->>K: 2. loginWithKeycloak()<br/>Keycloakにリダイレクト
+    K-->>U: 3. Keycloakログイン画面表示
+    U->>K: 4. email/password入力<br/>(例: user1@example.com)<br/>※既存ToDoアプリと同じメール
+    K-->>K: 5. 認証成功<br/>トークン発行 (sub: xyz-789)
+    K->>F: 6. /callbackにリダイレクト + トークン付与
+    F-->>F: 7. keycloak.init() トークン取得
+    F-->>F: 8. document.cookie = keycloak_token
+    F->>B: 9. POST /api/auth/keycloak/sync<br/>Bearer: keycloak_token
+    B->>K: 10. トークン検証 (Keycloak公開鍵)
+    B-->>B: 11. authType === 1 チェック<br/>(1: keycloak)
+    B->>DB: 12. userRepository.findUserBySub(sub)<br/>WHERE sso_user_id = 'xyz-789'
+    DB-->>B: → 見つからない (null)
+
+    alt email が存在する場合
+        B->>DB: 13. userRepository.findUserByEmail(email)<br/>WHERE email = 'user1@example.com'
+        DB-->>B: → 既存ユーザー発見
+
+        alt 既存のToDoアプリユーザーが見つかった
+            B->>DB: 14. userRepository.linkSsoToUser(userId, sub)<br/>UPDATE users SET<br/>auth_type=1, sso_user_id='xyz-789',<br/>password=NULL, updated_at=NOW()
+            B->>DB: 15. userRepository.findUserById(userId)<br/>更新後のユーザー情報取得
+            DB-->>B: 更新されたユーザー情報
+            B-->>F: 16. { user: {...}, message: '既存のToDoアプリアカウントと連携しました' }
+        else 既存ユーザーが見つからない
+            B->>DB: 14. userRepository.createUserWithSso({<br/>email, name, sub, authType: 1 })<br/>INSERT INTO users ...
+            DB-->>B: 新規ユーザー情報
+            B-->>F: 15. { user: {...}, message: '新規アカウントを作成しました' }
+        end
+    else email が存在しない場合
+        B->>DB: 13. userRepository.createUserWithSso({<br/>email: null, name, sub, authType: 1 })<br/>INSERT INTO users ...
+        DB-->>B: 新規ユーザー情報
+        B-->>F: 14. { user: {...}, message: '新規アカウントを作成しました' }
+    end
+
+    F->>F: 17. router.push('/dashboard')
+    F-->>U: 18. ダッシュボード表示<br/>(既存連携の場合はToDoタスクが表示される)
